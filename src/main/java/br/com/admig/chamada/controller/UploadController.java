@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -26,8 +27,12 @@ import java.util.Arrays;
 @RequestMapping("/api/upload")
 public class UploadController {
 
-    private static final Path UPLOAD_DIR = Path.of("uploads");
+    private final Path uploadDir;
     private static final Set<String> TIPOS_PERMITIDOS = Set.of("image/jpeg", "image/png", "image/webp");
+
+    public UploadController(@Value("${app.upload-dir:uploads}") String uploadDir) {
+        this.uploadDir = Path.of(uploadDir);
+    }
 
     @PostMapping("/foto-perfil")
     public ResponseEntity<Map<String, String>> uploadFotoPerfil(@RequestParam("arquivo") MultipartFile arquivo) throws IOException {
@@ -41,7 +46,7 @@ public class UploadController {
         if (!assinaturaCompativel(arquivo, tipo.toLowerCase(Locale.ROOT))) {
             return ResponseEntity.badRequest().body(Map.of("erro", "O conteúdo do arquivo não corresponde a uma imagem válida"));
         }
-        Files.createDirectories(UPLOAD_DIR);
+        Files.createDirectories(uploadDir);
 
         String extensao = switch (tipo.toLowerCase(Locale.ROOT)) {
             case "image/jpeg" -> ".jpg";
@@ -50,7 +55,7 @@ public class UploadController {
             default -> throw new IllegalArgumentException("Tipo de imagem não suportado");
         };
         String nomeArquivo = UUID.randomUUID() + extensao;
-        Path destino = UPLOAD_DIR.resolve(nomeArquivo);
+        Path destino = uploadDir.resolve(nomeArquivo);
         arquivo.transferTo(destino);
 
         String url = "/uploads/" + nomeArquivo;
