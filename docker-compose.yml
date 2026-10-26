@@ -1,0 +1,43 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: chamada_admig
+      POSTGRES_USER: admig
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-local-dev-only}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admig -d chamada_admig"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PORT: 8080
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: chamada_admig
+      DB_USER: admig
+      DB_PASSWORD: ${DB_PASSWORD:-local-dev-only}
+      DB_SSLMODE: disable
+      JWT_SECRET: ${JWT_SECRET:-local-dev-jwt-secret-change-before-production-123456}
+      CORS_ORIGINS: http://localhost:5173,http://localhost:3000
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@admig.org}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-local-admin-change-me}
+      UPLOAD_DIR: /var/data/uploads
+    ports:
+      - "8080:8080"
+    volumes:
+      - uploads_data:/var/data
+
+volumes:
+  postgres_data:
+  uploads_data:
