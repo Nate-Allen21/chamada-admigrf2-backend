@@ -28,6 +28,10 @@ services:
         sync: false
       - key: ADMIN_PASSWORD
         sync: false
+      - key: CLEO_EMAIL
+        sync: false
+      - key: CLEO_PASSWORD
+        sync: false
       - key: UPLOAD_DIR
         value: /var/data/uploads
     disk:

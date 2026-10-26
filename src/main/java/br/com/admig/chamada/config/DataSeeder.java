@@ -26,10 +26,17 @@ public class DataSeeder implements CommandLineRunner {
     @Value("${app.admin.default-password}")
     private String adminPassword;
 
+    @Value("${app.secretary.default-email:}")
+    private String secretaryEmail;
+
+    @Value("${app.secretary.default-password:}")
+    private String secretaryPassword;
+
     @Override
     public void run(String... args) {
         seedClasses();
         seedAdmin();
+        seedSecretary();
     }
 
     private void seedClasses() {
@@ -53,5 +60,20 @@ public class DataSeeder implements CommandLineRunner {
                     .ativo(true)
                     .build());
         }
+    }
+
+    private void seedSecretary() {
+        if (secretaryEmail.isBlank() || secretaryPassword.isBlank()
+                || usuarioRepository.existsByEmail(secretaryEmail)) {
+            return;
+        }
+
+        usuarioRepository.save(Usuario.builder()
+                .nome("Cleo")
+                .email(secretaryEmail)
+                .senha(passwordEncoder.encode(secretaryPassword))
+                .role(Role.SECRETARIO)
+                .ativo(true)
+                .build());
     }
 }

@@ -35,3 +35,6 @@ app:
   admin:
     default-email: ${ADMIN_EMAIL:admin@admig.org}
     default-password: ${ADMIN_PASSWORD:Admig@2025!}
+  secretary:
+    default-email: ${CLEO_EMAIL:}
+    default-password: ${CLEO_PASSWORD:}

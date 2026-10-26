@@ -27,12 +27,16 @@ uploads. Crie o projeto/banco no Supabase e copie as credenciais PostgreSQL do
 - `JWT_SECRET`: segredo aleatório longo e privado (pelo menos 32 caracteres);
 - `CORS_ORIGINS`: domínio exato da Vercel, por exemplo `https://seu-app.vercel.app`;
 - `ADMIN_EMAIL` e `ADMIN_PASSWORD`: credenciais iniciais fortes do administrador;
+- `CLEO_EMAIL` e `CLEO_PASSWORD`: credenciais para criar a conta inicial da secretaria Cleo;
 - `UPLOAD_DIR`: `/var/data/uploads` (já definido no Blueprint; mantenha o disco Render).
 
 O `render.yaml` já cria as chaves acima como variáveis para preencher ou gera o
 `JWT_SECRET`. Se usar `SPRING_DATASOURCE_URL`, ela substitui host/porta/nome e
 deve incluir `?sslmode=require`; não é necessário configurar essa alternativa
 quando preencher `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER` e `DB_PASSWORD`.
+Configure também `CLEO_EMAIL` e `CLEO_PASSWORD` no Render para o primeiro
+startup criar a conta da secretaria. A senha é armazenada com hash; seed não
+altera contas que já existem com o mesmo e-mail.
 O Hibernate cria/atualiza tabelas na inicialização (`ddl-auto: update`). Nunca
 commite segredos ou use as senhas locais em produção.
 
