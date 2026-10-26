@@ -1,18 +1,18 @@
 package br.com.admig.chamada.service;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import br.com.admig.chamada.dto.RegistrarPresencaRequest;
 import br.com.admig.chamada.model.Aluno;
 import br.com.admig.chamada.model.Licao;
 import br.com.admig.chamada.model.Presenca;
-import br.com.admig.chamada.model.Usuario;
 import br.com.admig.chamada.repository.AlunoRepository;
 import br.com.admig.chamada.repository.LicaoRepository;
 import br.com.admig.chamada.repository.PresencaRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +28,7 @@ public class PresencaService {
      * registro para o par aluno+lição, ele é atualizado em vez de duplicado.
      */
     @Transactional
-    public List<Presenca> registrarChamada(RegistrarPresencaRequest request, Usuario registradoPor) {
+    public List<Presenca> registrarChamada(RegistrarPresencaRequest request) {
         Licao licao = licaoRepository.findById(request.getLicaoId())
                 .orElseThrow(() -> new RuntimeException("Lição não encontrada"));
 
@@ -41,8 +41,6 @@ public class PresencaService {
 
             presenca.setPresente(item.getPresente());
             presenca.setObservacao(item.getObservacao());
-            presenca.setRegistradoPor(registradoPor);
-
             return presencaRepository.save(presenca);
         }).toList();
     }

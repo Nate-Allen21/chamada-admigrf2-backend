@@ -1,12 +1,19 @@
 package br.com.admig.chamada.controller;
 
+import java.util.List;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import br.com.admig.chamada.model.Classe;
 import br.com.admig.chamada.service.ClasseService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/classes")
@@ -27,19 +34,16 @@ public class ClasseController {
 
     // Ambos os perfis podem gerenciar classes, conforme solicitado.
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR','SECRETARIO')")
     public Classe criar(@RequestBody Classe classe) {
         return classeService.salvar(classe);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR','SECRETARIO')")
     public Classe atualizar(@PathVariable Long id, @RequestBody Classe classe) {
         return classeService.atualizar(id, classe);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public void excluir(@PathVariable Long id) {
         classeService.excluir(id);
     }

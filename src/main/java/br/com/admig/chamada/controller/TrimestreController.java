@@ -1,13 +1,19 @@
 package br.com.admig.chamada.controller;
 
+import java.util.List;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import br.com.admig.chamada.dto.CalendarioResponse;
 import br.com.admig.chamada.model.Trimestre;
 import br.com.admig.chamada.service.TrimestreService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/trimestres")
@@ -33,13 +39,11 @@ public class TrimestreController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR','SECRETARIO')")
     public Trimestre criar(@RequestBody Trimestre trimestre) {
         return trimestreService.criarComLicoes(trimestre);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMINISTRADOR')")
     public void excluir(@PathVariable Long id) {
         trimestreService.excluir(id);
     }
