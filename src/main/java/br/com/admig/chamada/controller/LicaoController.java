@@ -32,7 +32,7 @@ public class LicaoController {
     }
 
     @PatchMapping("/{id}")
-    public Licao atualizarTitulo(@PathVariable Long id, @RequestBody String titulo) {
-        return licaoService.atualizarTitulo(id, titulo);
+    public Licao atualizarTitulo(@PathVariable Long id, @RequestBody(required = false) String titulo) {
+        return licaoService.atualizarTitulo(id, titulo == null ? "" : titulo);
     }
 }
