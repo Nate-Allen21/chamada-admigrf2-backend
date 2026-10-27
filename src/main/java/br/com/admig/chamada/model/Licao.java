@@ -34,7 +34,7 @@ public class Licao {
     @Column(nullable = false)
     private LocalDate data;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "trimestre_id", nullable = false)
     @JsonIgnoreProperties({"licoes"})
     private Trimestre trimestre;

@@ -32,7 +32,7 @@ public class Aluno {
 
     private String telefoneContato;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "classe_id", nullable = false)
     @JsonIgnoreProperties({"alunos"})
     private Classe classe;

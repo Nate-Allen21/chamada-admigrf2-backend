@@ -24,12 +24,12 @@ public class Presenca {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "aluno_id", nullable = false)
     @JsonIgnoreProperties({"classe"})
     private Aluno aluno;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "licao_id", nullable = false)
     @JsonIgnoreProperties({"trimestre"})
     private Licao licao;
